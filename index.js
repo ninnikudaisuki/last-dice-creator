@@ -10,27 +10,15 @@ const bossMap = require('./boss-map.json');
 const {
     RARE_DROP_DICE_CATEGORY_ID,
     RARE_DROP_DICE_CREATE_CHANNEL_ID,
-    API_KEY,
+    GOOGLE_APPLICATION_CREDENTIALS,
 } = process.env;
-
-function getApiKeyCredentials() {
-    const sslCreds = grpc.credentials.createSsl();
-    const googleAuth = new GoogleAuth();
-    const authClient = googleAuth.fromAPIKey(API_KEY);
-    const credentials = grpc.credentials.combineChannelCredentials(
-        sslCreds,
-        grpc.credentials.createFromGoogleCredential(authClient)
-    );
-    console.log(credentials)
-    return credentials;
-}
 
 discord.once('ready', () => {
     console.log(`Logged in as ${discord.user.tag}!`);
 });
 
 discord.on('messageCreate', async (message) => {
-    
+
     // メッセージから画像URLを探す
     let url;
     try {
@@ -116,8 +104,8 @@ discord.on('interactionCreate', async (interaction) => {
 discord.login();
 
 async function detectImage(base64ed, ownerName) {
-    const sslCredentials = getApiKeyCredentials();
-    const visionClient = new vision.ImageAnnotatorClient({sslCredentials});
+    // const sslCredentials = getApiKeyCredentials();
+    const visionClient = new vision.ImageAnnotatorClient({credentials: JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)});
 
     const [result] = await visionClient.textDetection({
         image: {
