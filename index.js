@@ -13,6 +13,7 @@ const {
     DISCORD_TOKEN
 } = process.env;
 
+
 exports.discordHandler = async () => {
 
     discord.once('ready', () => {
