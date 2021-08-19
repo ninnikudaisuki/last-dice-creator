@@ -62,7 +62,6 @@ discord.on('messageCreate', async (message) => {
         const drops = await detectImage(base64, ownerName);
         // メッセージを返却する
         let row = new MessageActionRow();
-        console.log(drops.length);
         for (const drop of drops) {
             // ダイス作成ボタン
             const bossName = bossMap.hasOwnProperty(drop.place) ? bossMap[drop.place] : drop.place
@@ -124,6 +123,7 @@ async function detectImage(base64ed, ownerName) {
 
     const matcher = /(.*パーティメンバーの)?(.+)が(.+)で(.+)を/;
     const text = detections.map(node => node.description)[0].replace(/[\n ]/g, '')
+    console.log(text);
     let drops;
     drops = text.split(/獲得しました。?/)
         .filter(paragraph => matcher.test(paragraph))
