@@ -62,10 +62,10 @@ discord.on('messageCreate', async (message) => {
         const drops = await detectImage(base64, ownerName);
         // メッセージを返却する
         let row = new MessageActionRow();
+        console.log(drops);
         for (const drop of drops) {
             // ダイス作成ボタン
             const bossName = bossMap.hasOwnProperty(drop.place) ? bossMap[drop.place] : drop.place
-            console.log(drop)
             row.addComponents(
                 new MessageButton()
                     .setCustomId(`CREATE_DICE::${drop.owner}::${bossName}::${drop.item}`)
