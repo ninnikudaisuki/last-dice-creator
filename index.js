@@ -136,7 +136,9 @@ async function detectImage(base64ed, ownerName) {
             }
         });
     // 自分で拾った場合のログかもしれないので調べる
-    if (drops.length === 0) {
+    if (drops.every(drop => drop.owner === '匿名の勇者')) {
+        drops.forEach(drop => drop.owner = ownerName);
+    } else if (drops.length === 0) {
         const pattern = /(.+)を/;
         drops = text.split(/獲得しました。?/)
             .filter(paragraph => pattern.test(paragraph))
