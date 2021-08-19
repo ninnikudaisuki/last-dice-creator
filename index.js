@@ -12,7 +12,7 @@ const {
     RARE_DROP_DICE_CREATE_CHANNEL_ID,
     GOOGLE_APPLICATION_CREDENTIALS,
     MONITORING_CATEGORY_ID,
-    
+    DISCORD_TOKEN,
 } = process.env;
 
 discord.once('ready', () => {
@@ -20,10 +20,11 @@ discord.once('ready', () => {
 });
 
 discord.on('messageCreate', async (message) => {
+    console.log(message.channel)
     
     // 画像処理するカテゴリーないのメッセージか調べる
     if (message.channel.parentID !== MONITORING_CATEGORY_ID) {
-        console.log('no')
+        console.log('no message')
         return;
     }
 
