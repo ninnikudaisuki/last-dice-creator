@@ -123,7 +123,6 @@ async function detectImage(base64ed, ownerName) {
 
     const matcher = /(.*パーティメンバーの)?(.+)が(.+)で(.+)を/;
     const text = detections.map(node => node.description)[0].replace(/[\n ]/g, '')
-    console.log(text);
     let drops;
     drops = text.split(/獲得しました。?/)
         .filter(paragraph => matcher.test(paragraph))
@@ -139,10 +138,13 @@ async function detectImage(base64ed, ownerName) {
     if (drops.every(drop => drop.owner === '匿名の勇者')) {
         drops.forEach(drop => drop.owner = ownerName);
     } else if (drops.length === 0) {
+        console.log('hogeee');
+        console.log(text);
         const pattern = /(.+)を/;
         drops = text.split(/獲得しました。?/)
             .filter(paragraph => pattern.test(paragraph))
             .map(paragraph => {
+                console.log(paragraph)
                 const array = paragraph.match(pattern);
                 return {
                     owner: ownerName,
@@ -150,6 +152,7 @@ async function detectImage(base64ed, ownerName) {
                     item: array[1]
                 }
             })
+        console.log(drops);
     }
     const map = new Map();
     for (const drop of drops) {
