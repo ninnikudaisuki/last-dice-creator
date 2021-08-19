@@ -20,7 +20,7 @@ discord.once('ready', () => {
 });
 
 discord.on('messageCreate', async (message) => {
-    console.log(message.channel)
+    console.log(MONITORING_CATEGORY_ID)
     
     // 画像処理するカテゴリーないのメッセージか調べる
     if (message.channel.parentID !== MONITORING_CATEGORY_ID) {
