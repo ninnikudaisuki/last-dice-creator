@@ -1,9 +1,9 @@
-const {Client, Intents, MessageActionRow, MessageButton, MessageEmbed, User} = require('discord.js');
+const {Client, Intents, MessageActionRow, MessageButton} = require('discord.js');
 const discord = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 const axios = require('axios');
 const vision = require('@google-cloud/vision');
 const moment = require('moment');
-const {GoogleAuth, grpc} = require('google-gax');
+require('dotenv').config();
 
 const bossMap = require('./boss-map.json');
 
@@ -11,6 +11,8 @@ const {
     RARE_DROP_DICE_CATEGORY_ID,
     RARE_DROP_DICE_CREATE_CHANNEL_ID,
     GOOGLE_APPLICATION_CREDENTIALS,
+    MONITORING_CATEGORY_ID,
+    
 } = process.env;
 
 discord.once('ready', () => {
@@ -18,6 +20,11 @@ discord.once('ready', () => {
 });
 
 discord.on('messageCreate', async (message) => {
+    
+    // 画像処理するカテゴリーないのメッセージか調べる
+    if (message.channel.parentID !== MONITORING_CATEGORY_ID) {
+        return;
+    }
 
     // メッセージから画像URLを探す
     let url;
@@ -58,6 +65,7 @@ discord.on('messageCreate', async (message) => {
         for (const drop of drops) {
             // ダイス作成ボタン
             const bossName = bossMap.hasOwnProperty(drop.place) ? bossMap[drop.place] : drop.place
+            console.log(drop)
             row.addComponents(
                 new MessageButton()
                     .setCustomId(`CREATE_DICE::${drop.owner}::${bossName}::${drop.item}`)
@@ -104,8 +112,8 @@ discord.on('interactionCreate', async (interaction) => {
 discord.login();
 
 async function detectImage(base64ed, ownerName) {
-    // const sslCredentials = getApiKeyCredentials();
     const visionClient = new vision.ImageAnnotatorClient({credentials: JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)});
+    // const visionClient = new vision.ImageAnnotatorClient();
 
     const [result] = await visionClient.textDetection({
         image: {
@@ -121,9 +129,8 @@ async function detectImage(base64ed, ownerName) {
         .filter(paragraph => matcher.test(paragraph))
         .map(paragraph => {
             const array = paragraph.match(matcher);
-            ;
             return {
-                owner: array[2].replace(/[|●■]/g, ''),
+                owner: array[2].replace(/[|●■「]/g, ''),
                 place: array[3],
                 item: array[4]
             }
