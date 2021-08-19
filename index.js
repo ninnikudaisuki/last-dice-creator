@@ -21,6 +21,7 @@ function getApiKeyCredentials() {
         sslCreds,
         grpc.credentials.createFromGoogleCredential(authClient)
     );
+    console.log(credentials)
     return credentials;
 }
 
