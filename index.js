@@ -62,7 +62,7 @@ discord.on('messageCreate', async (message) => {
         const drops = await detectImage(base64, ownerName);
         // メッセージを返却する
         let row = new MessageActionRow();
-        console.log(drops);
+        console.log(drops.length);
         for (const drop of drops) {
             // ダイス作成ボタン
             const bossName = bossMap.hasOwnProperty(drop.place) ? bossMap[drop.place] : drop.place
