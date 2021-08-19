@@ -122,7 +122,8 @@ async function detectImage(base64ed, ownerName) {
     });
     const detections = result.textAnnotations;
 
-    const matcher = /(.*パーティメンバーの)?(.+)が(.+)で(.+)を/;
+    
+    const matcher = /(.*パーティ.+の)?(.+)が(.+)で(.+)を/;
     const text = detections.map(node => node.description)[0].replace(/[\n ]/g, '')
     let drops;
     drops = text.split(/獲得しました。?/)
