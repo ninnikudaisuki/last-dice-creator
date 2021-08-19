@@ -73,7 +73,8 @@ discord.on('messageCreate', async (message) => {
             );
         }
         const replyMessage = `ボタンを押してドロップアイテムのダイス会場を作成します。\n`
-            + `**解析結果が正確でない**場合や、**匿名の勇者が所有者**の場合は\n\n<#${RARE_DROP_DICE_CREATE_CHANNEL_ID}> \`!make 所有者名 アイテム名 boss名\`\n\nを入力してダイス会場を作成してください。`;
+            + `解析結果が正確でない場合は、取得者・場所・アイテムがわかる画像で再度お試しください。\n\n` 
+            + `<#${RARE_DROP_DICE_CREATE_CHANNEL_ID}> \`!make 所有者名 アイテム名 boss名\`\n\nでダイス会場を作成することもできます。`;
 
         await message.reply({content: replyMessage, components: [row]});
     } catch (e) {
