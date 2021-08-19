@@ -141,13 +141,10 @@ async function detectImage(base64ed, ownerName) {
     }
     
     if (drops.length === 0) {
-        console.log('hogeee');
-        console.log(text);
         const pattern = /(.+)を/;
         drops = text.split(/獲得しました。?/)
             .filter(paragraph => pattern.test(paragraph))
             .map(paragraph => {
-                console.log(paragraph)
                 const array = paragraph.match(pattern);
                 return {
                     owner: ownerName,
